@@ -10,3 +10,5 @@ Since the project is not a project for personal use, the code is very vertical a
 
 
 Installation and usage will come soon...
+
+<img width="394" height="393" alt="immagine" src="https://github.com/user-attachments/assets/c151ffdc-6263-4629-88bf-700af6fe2e70" />

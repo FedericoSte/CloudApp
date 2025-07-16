@@ -14,4 +14,6 @@ Installation and usage will come soon...
 <img width="394" height="393" alt="immagine" src="https://github.com/user-attachments/assets/c151ffdc-6263-4629-88bf-700af6fe2e70" /> <img width="353" height="172" alt="immagine" src="https://github.com/user-attachments/assets/f5fabd86-5880-4cb5-9e74-8d0068ca1c23" />
 
 
-<img width="995" height="843" alt="immagine" src="https://github.com/user-attachments/assets/02e4c2ca-259c-477f-b68c-4da0c02ab3cd" />
+
+
+<img width="993" height="837" alt="immagine" src="https://github.com/user-attachments/assets/b2d8f0be-7b99-4fda-9142-a0b5be04ee01" />

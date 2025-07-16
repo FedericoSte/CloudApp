@@ -33,12 +33,6 @@ import platform
 
 
 
-# 🔧 Configurazione del server
-SSH_HOST = ""   #<----- put your server ip
-SSH_PORT = 22   #<----- put your server port (type=int) usualy port 22
-SSH_USER = ""   #<----- put the name of the server user 
-REMOTE_DIR = "" #<----- put server remote dir 
-
 class SSHFileManager(QWidget):
     def __init__(self):
         super().__init__()
@@ -47,9 +41,18 @@ class SSHFileManager(QWidget):
         self.resize(1000, 800)
 
 
-        self.ping_thread = None  # Inizialmente nessun thread
-        self.ping_timer = QTimer(self)  # Timer per avviare il ping ogni 60 secondi
-        self.ping_timer.timeout.connect(self.start_ping_thread)  # Connessione del timeout del timer
+        self.ping_thread = None  
+        self.ping_timer = QTimer(self)  
+        self.ping_timer.timeout.connect(self.start_ping_thread)  
+
+        self.current_dir = None
+        self.clipboard = None
+        self.cut_mode = False
+        self.server_ip = None        
+        self.server_user = None
+        self.server_dir = None 
+        self.server_port = None
+        self.connesso = False
 
 
         self.layout = QVBoxLayout()
@@ -145,11 +148,11 @@ class SSHFileManager(QWidget):
         self.setLayout(self.layout)
         self.center_window()
 
-        self.current_dir = REMOTE_DIR
-        self.clipboard = None
-        self.cut_mode = False
+
 
         self.connect_ssh()
+
+
         
         self.download_button.clicked.connect(self.download)
         self.upload_button.clicked.connect(self.upload_file)
@@ -163,13 +166,15 @@ class SSHFileManager(QWidget):
         # Avvia il timer per il ping
         self.ping_timer.start(30000)  # Ogni 30 secondi
 
+    def get_connesso(self): return self.connesso
+
 
     def center_window(self):
         """Centra la finestra sullo schermo"""
-        qr = self.frameGeometry()  # geometria della finestra
-        cp = QDesktopWidget().availableGeometry().center()  # centro dello schermo disponibile
-        qr.moveCenter(cp)  # sposta il rettangolo al centro
-        self.move(qr.topLeft())  # muovi la finestra in quella posizione
+        qr = self.frameGeometry()  
+        cp = QDesktopWidget().availableGeometry().center() 
+        qr.moveCenter(cp)  
+        self.move(qr.topLeft())  
 
 
     def shutdown_server(self):
@@ -186,7 +191,7 @@ class SSHFileManager(QWidget):
 
                 # Mostra messaggio e chiude l'app dopo 2 secondi
                 QMessageBox.information(self, "Shutdown", "Il server è in fase di spegnimento...")
-                QTimer.singleShot(2000, self.close)  # chiude l'app dopo 2 secondi
+                QTimer.singleShot(2000, self.close)  
             except Exception as e:
                 QMessageBox.critical(self, "Errore", f"Errore durante l'arresto del server: {e}")
 
@@ -194,6 +199,16 @@ class SSHFileManager(QWidget):
 
 
     def connect_ssh(self):
+
+
+        dialog = LoginDialog()
+        if dialog.exec_() == QDialog.Accepted:
+            self.server_ip, self.server_user, self.server_dir, self.server_port = dialog.get_data()
+        
+        else:
+            return False
+
+
         password, ok = QInputDialog.getText(self, "Connessione SSH", "Inserisci la password:", echo=QLineEdit.Password)
         if not ok:
             QMessageBox.warning(self, "Operazione Annullata", "Connessione SSH annullata.")
@@ -205,7 +220,7 @@ class SSHFileManager(QWidget):
         try:
             for i in range(1, 6):
                 loading_dialog.update_message(f"Tentativo di connessione al server... [N.{i}]")
-                if self.ping1(SSH_HOST):
+                if self.ping1(self.server_ip):
                     break
 
                 elif i == 5:
@@ -216,10 +231,14 @@ class SSHFileManager(QWidget):
 
             self.ssh = paramiko.SSHClient()
             self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.ssh.connect(SSH_HOST, port=SSH_PORT, username=SSH_USER, password=password)
+            self.ssh.connect(self.server_ip, port=self.server_port, username=self.server_user, password=password)
             self.sftp = self.ssh.open_sftp()
+            self.sftp.chdir(self.server_dir)
+            self.current_dir = self.server_dir
 
             loading_dialog.update_message("Connessione riuscita!")
+
+            self.connesso = True 
 
             time.sleep(1)
             loading_dialog.close()
@@ -240,7 +259,6 @@ class SSHFileManager(QWidget):
 
     def start_ping_thread(self):
         """Avvia il thread per eseguire il ping e calcolare la media."""
-        # Avvia il thread solo quando necessario
         self.ping_thread = ThreadPingSteve("8.8.8.8")
         self.ping_thread.ping_result_signal.connect(self.print_ping_result)
         self.ping_thread.start()  # Avvia il thread
@@ -307,15 +325,15 @@ class SSHFileManager(QWidget):
             if item.text() == filename:
                 item.setIcon(icon)  # Aggiorna l'icona per l'elemento
                 break
-        QApplication.processEvents()  # Forza il ridisegno immediato dell'interfaccia
+        QApplication.processEvents()  
 
 
 
 
     def stop_image_thread(self):
         if self.image_download_thread and self.image_download_thread.isRunning():
-            self.image_download_thread.stop()       # imposta _is_running = False
-            self.image_download_thread.wait()       # aspetta che finisca
+            self.image_download_thread.stop()       
+            self.image_download_thread.wait()       
             self.image_download_thread = None
 
 
@@ -368,13 +386,13 @@ class SSHFileManager(QWidget):
 
 
     def load_remote_files(self):
-        self.stop_image_thread()  # ✅ interruzione sicura
+        self.stop_image_thread()  
 
         self.file_list.clear()
         self.breadcrumb_bar.setText(self.current_dir)
 
         try:
-            self.sftp.chdir(self.current_dir)  # solo dopo aver fermato il thread!
+            self.sftp.chdir(self.current_dir)  
         except Exception as e:
             QMessageBox.critical(self, "Errore", f"Errore nel cambio directory: {e}")
             return
@@ -424,7 +442,7 @@ class SSHFileManager(QWidget):
         self.file_list.clear()
         for filename in sorted_list_file:
             remote_path = f"{self.current_dir}/{filename}"
-            icon = QIcon(resource_path("immagini/icon_unknow.jpg")) # fallback predefinito
+            icon = QIcon(resource_path("immagini/icon_unknow.png")) 
             user_role = "other"
 
             try:
@@ -432,7 +450,7 @@ class SSHFileManager(QWidget):
                 is_dir = stat_is_dir(attr.st_mode)
 
                 if is_dir:
-                    icon = QIcon(resource_path("immagini/icon_folder.jpg"))
+                    icon = QIcon(resource_path("immagini/icon_folder.png"))
                     user_role = "folder"
                 else:
                     file_type, _ = mimetypes.guess_type(filename)
@@ -440,18 +458,9 @@ class SSHFileManager(QWidget):
                     if file_type:
                         if file_type.startswith("image"):
                             image_list.append(filename)
-                            icon = QIcon(resource_path("immagini/icon_image.jpg"))
+                            icon = QIcon(resource_path("immagini/icon_image.png"))
                             user_role = "image"                            
 
-
-                            """
-                            with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(filename)[1]) as tmp:
-                                self.sftp.get(remote_path, tmp.name)
-
-                                pixmap = QPixmap(tmp.name).scaled(48, 48, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-                                icon = QIcon(pixmap)
-                                user_role = "image"
-                            """
                        
                         elif file_type.startswith("video"):
                             icon = QIcon("immagini/icon_video.png")
@@ -460,10 +469,10 @@ class SSHFileManager(QWidget):
                            
                                
                         elif file_type.startswith("audio"):
-                            icon = QIcon(resource_path("immagini/icon_audio.jpg"))
+                            icon = QIcon(resource_path("immagini/icon_audio.png"))
                             user_role = "audio"
                         else:
-                            icon = QIcon(resource_path("immagini/icon_file.jpg"))
+                            icon = QIcon(resource_path("immagini/icon_file.png"))
                             user_role = "text"
 
             except Exception as e:
@@ -471,7 +480,7 @@ class SSHFileManager(QWidget):
 
             item = QListWidgetItem(icon, filename)
             item.setData(Qt.UserRole, user_role)
-            item.setSizeHint(QSize(60, 60))  # 👈 Imposta dimensione uniforme per ogni item
+            item.setSizeHint(QSize(60, 60))  #Imposta dimensione uniforme per ogni item
             self.file_list.addItem(item)
 
 
@@ -514,7 +523,7 @@ class SSHFileManager(QWidget):
             self.load_remote_files()
 
     def go_home_directory(self):
-        self.current_dir = REMOTE_DIR
+        self.current_dir = self.server_dir
         self.load_remote_files()
 
 
@@ -548,7 +557,7 @@ class SSHFileManager(QWidget):
         attr = self.sftp.stat(remote_path)
         is_dir = stat_is_dir(attr.st_mode)
 
-        # Scegli la destinazione
+
         local_folder = QFileDialog.getExistingDirectory(self, "Seleziona cartella di destinazione")
         if not local_folder:
             return
@@ -826,39 +835,56 @@ class SSHFileManager(QWidget):
 
 
 
-class ImageDownloadThread(QThread):
-    # Segnale per aggiornare l'icona di un singolo file
-    icon_updated = pyqtSignal(str, QIcon)
 
-    def __init__(self, sftp, remote_dir, image_list):
+class LoginDialog(QDialog):
+    def __init__(self):
         super().__init__()
-        self.sftp = sftp
-        self.remote_dir = remote_dir
-        self.image_list = image_list  # Lista di file da caricare
+        self.setWindowTitle("Credenziali SSH")
+        self.setFixedSize(400, 350)
 
-    def run(self):
-        # Processa le immagini una alla volta
-        for filename in self.image_list:
-            if not self._is_running:
-                break  # Interrompe pulitamente
+        # Label e input per IP
+        self.ip_label = QLabel("Indirizzo IP:")
+        self.ip_input = QLineEdit()
 
-            remote_path = f"{self.remote_dir}/{filename}"
+        # Label e input per username
+        self.user_label = QLabel("Username:")
+        self.user_input = QLineEdit()
 
-            try:
-                with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(filename)[1]) as tmp:
-                    self.sftp.get(remote_path, tmp.name)
+        # Label e input per remote directory
+        self.dir_label = QLabel("remote directory:")
+        self.dir_input = QLineEdit()
 
-                    # Crea una pixmap per l'icona
-                    pixmap = QPixmap(tmp.name).scaled(48, 48, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-                    icon = QIcon(pixmap)
+        # Label e input per la porta
+        self.port_label = QLabel("remote port:")
+        self.port_input = QLineEdit()
 
-                    # Invia un segnale per aggiornare l'icona dell'elemento corrispondente
-                    self.icon_updated.emit(filename, icon)
+        # Pulsanti
+        self.ok_button = QPushButton("OK")
+        self.cancel_button = QPushButton("Annulla")
+        self.ok_button.clicked.connect(self.accept)
+        self.cancel_button.clicked.connect(self.reject)
 
-            except Exception as e:
-                print(f"Errore nel download dell'immagine {filename}: {e}")
+        # Layout
+        layout = QVBoxLayout()
+        layout.addWidget(self.ip_label)
+        layout.addWidget(self.ip_input)
+        layout.addWidget(self.user_label)
+        layout.addWidget(self.user_input)
+        layout.addWidget(self.dir_label)
+        layout.addWidget(self.dir_input)
+        layout.addWidget(self.port_label)
+        layout.addWidget(self.port_input)
+    
 
+        button_layout = QHBoxLayout()
+        button_layout.addWidget(self.ok_button)
+        button_layout.addWidget(self.cancel_button)
+        layout.addLayout(button_layout)
 
+        self.setLayout(layout)
+
+    def get_data(self):
+        return self.ip_input.text(), self.user_input.text(), self.dir_input.text(), self.port_input.text()
 
 
 
@@ -912,15 +938,15 @@ class ImageDownloadThread(QThread):
         self.sftp = sftp
         self.remote_dir = remote_dir
         self.image_list = image_list
-        self._is_running = True  # ✅ flag per interrompere
+        self._is_running = True  
 
     def stop(self):
-        self._is_running = False  # ✅ metodo per segnalare stop
+        self._is_running = False 
 
     def run(self):
         for filename in self.image_list:
             if not self._is_running:
-                break  # ✅ interrompe il thread se richiesto
+                break  
 
             remote_path = f"{self.remote_dir}/{filename}"
 
@@ -959,16 +985,16 @@ class FileBatchUploadThread(QThread):
 
             for path in self.local_file_paths:
                 if not self._is_running:
-                    break  # interrompe in sicurezza
+                    break  
 
                 filename = os.path.basename(path)
                 remote_path = f"{self.remote_dir}/{filename}"
 
-                last_transferred = 0  # serve per sapere quanto aggiornare
+                last_transferred = 0 
 
                 def callback(transferred, total, path=path):
                     if not self._is_running:
-                        return  # evita crash, ma non blocca subito il trasferimento
+                        return  
 
                     percent = int((self.uploaded_size + transferred) / self.total_size * 100)
                     self.progress_updated.emit(percent)
@@ -987,7 +1013,7 @@ class FileBatchUploadThread(QThread):
 
 #-- folder upload --
 class FolderBatchUploadThread(QThread):
-    progress_updated = pyqtSignal(int)  # percentuale
+    progress_updated = pyqtSignal(int)  
     upload_finished = pyqtSignal(str)
 
     def __init__(self, sftp, local_dir, remote_dir):
@@ -1137,13 +1163,6 @@ class FolderBatchDownloadThread(QThread):
 
 
 
-import subprocess
-import time
-import platform
-import sys
-from PyQt5.QtCore import QThread, pyqtSignal
-from PyQt5.QtWidgets import QMessageBox
-
 class ThreadPingSteve(QThread):
     ping_result_signal = pyqtSignal(float)
 
@@ -1221,6 +1240,7 @@ if __name__ == "__main__":
 
     window = SSHFileManager()
 
-    window.show()
 
-    sys.exit(app.exec_())
+    if window.get_connesso():
+        window.show()
+        sys.exit(app.exec_())

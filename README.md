@@ -11,4 +11,7 @@ Since the project is not a project for personal use, the code is very vertical a
 
 Installation and usage will come soon...
 
-<img width="394" height="393" alt="immagine" src="https://github.com/user-attachments/assets/c151ffdc-6263-4629-88bf-700af6fe2e70" />
+<img width="394" height="393" alt="immagine" src="https://github.com/user-attachments/assets/c151ffdc-6263-4629-88bf-700af6fe2e70" /> <img width="353" height="172" alt="immagine" src="https://github.com/user-attachments/assets/f5fabd86-5880-4cb5-9e74-8d0068ca1c23" />
+
+
+<img width="992" height="838" alt="immagine" src="https://github.com/user-attachments/assets/8324fe2c-ea35-44f6-95c1-51854d2c0a49" />

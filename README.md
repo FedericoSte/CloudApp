@@ -9,8 +9,6 @@ The application uses multithreding to manage different execution flows.
 Since the project is not a project for personal use, the code is very vertical and not extremely clear, I will update it with new versions.
 
 
-Installation and usage will come soon...
-
 
 
 <img width="395" height="388" alt="immagine" src="https://github.com/user-attachments/assets/d850251d-3d64-448a-9ee1-c04cae08f5dc" /> <img width="336" height="171" alt="immagine" src="https://github.com/user-attachments/assets/1645439c-4a18-4def-ba29-2c627711a338" />
@@ -93,12 +91,13 @@ sudo ufw allow ssh
 sudo ufw reload
 ```
 
-# Now simply with the ip address of your Linux computer you will be able to use CloudApp.
+###### Now simply with the ip address of your Linux computer you will be able to use CloudApp.
 
 # Usage
 CloudApp is very useful for repurposing an old computer and turning it into a cloud server, potentially accessible from around the world.
 Obviously, the server is initially exposed only within the local network, but you can implement various solutions to reach your server from anywhere.
 Personally, I found the most secure and stable solution to be using a VPN.
 Create your VPN through your preferred provider, connect your server to that VPN, and you're done.
-I personally use TailScale VPN. Below is a short tutorial on how to install TailScale on your Linux server and any other device.
+I personally use [TailScale VPN](https://tailscale.com/). Below is a short tutorial on how to install TailScale on your Linux server and any other device.
 
+Tutorial TailScale coming soon...

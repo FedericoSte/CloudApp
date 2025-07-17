@@ -1,7 +1,7 @@
 # CloudApp
 **Cloud App for Windows based on ssh protocol.**
 
-Cloud App was born as a project for personal use and needs, but I decided to publish it because I found it useful in different contexts.
+**Cloud App** was born as a project for personal use and needs, but I decided to publish it because I found it useful in different contexts.
 CloudApp is written in python in a single file, to facilitate its conversion to .exe via the PYInstaller module.
 **The application is based on the ssh and sftp protocols to communicate with the server (a Linux server is required) to provide the classic services of a File Manager such as upload, downlad, copy, paste ...**
 The application uses multithreding to manage different execution flows.
@@ -95,8 +95,8 @@ sudo ufw reload
 **Now simply with the ip address of your Linux computer you will be able to use CloudApp.**
 
 # Usage
-CloudApp is very useful for repurposing an old computer and turning it into a cloud server, potentially accessible from around the world.
-Obviously, the server is initially exposed only within the local network, but you can implement various solutions to reach your server from anywhere.
+**CloudApp is very useful for repurposing an old computer and turning it into a cloud server, potentially accessible from around the world.**
+**Obviously, the server is initially exposed only within the local network**, but you can implement various solutions to reach your server from anywhere.
 Personally, I found the most secure and stable solution to be using a VPN.
 Create your VPN through your preferred provider, connect your server to that VPN, and you're done.
 I personally use [TailScale VPN](https://tailscale.com/). Below is a short tutorial on how to install TailScale on your Linux server and any other device.

@@ -11,9 +11,79 @@ Since the project is not a project for personal use, the code is very vertical a
 
 Installation and usage will come soon...
 
-<img width="394" height="393" alt="immagine" src="https://github.com/user-attachments/assets/c151ffdc-6263-4629-88bf-700af6fe2e70" /> <img width="353" height="172" alt="immagine" src="https://github.com/user-attachments/assets/f5fabd86-5880-4cb5-9e74-8d0068ca1c23" />
+
+
+<img width="395" height="388" alt="immagine" src="https://github.com/user-attachments/assets/d850251d-3d64-448a-9ee1-c04cae08f5dc" /> <img width="336" height="171" alt="immagine" src="https://github.com/user-attachments/assets/1645439c-4a18-4def-ba29-2c627711a338" />
+
+<img width="996" height="836" alt="immagine" src="https://github.com/user-attachments/assets/0e681f9f-4f88-4de8-a784-e132d125b261" />
 
 
 
 
-<img width="993" height="837" alt="immagine" src="https://github.com/user-attachments/assets/b2d8f0be-7b99-4fda-9142-a0b5be04ee01" />
+
+
+
+
+
+# 🔐 How to Enable SSH Service on a New Linux Computer
+
+This guide explains how to **install, enable, and verify the SSH service** on a Linux system. SSH (Secure Shell) allows you to access your computer remotely via the terminal.
+
+---
+
+## 📦 1. Install OpenSSH Server
+
+### Ubuntu / Debian
+
+```bash
+sudo apt update
+sudo apt install openssh-server
+
+Fedora
+
+sudo dnf install openssh-server
+
+Arch Linux / Manjaro
+
+sudo pacman -S openssh
+
+⚙️ 2. Enable and Start the SSH Service
+
+To enable the service at startup and start it immediately:
+
+sudo systemctl enable ssh
+sudo systemctl start ssh
+
+    ℹ️ On some systems, the service may be called sshd instead of ssh. If so, use:
+
+    sudo systemctl enable sshd
+    sudo systemctl start sshd
+
+🔍 3. Check if SSH is Running
+
+Verify that the service is active:
+
+sudo systemctl status ssh
+
+Expected output:
+
+Active: active (running)
+
+🧪 4. Test SSH Connection
+
+From another computer on the same network (or remotely, if firewall/port forwarding is configured), connect using:
+
+ssh username@ip_address
+
+Example:
+
+ssh mario@192.168.1.100
+
+You may be asked to confirm the server's fingerprint the first time.
+🔥 5. (Optional) Allow SSH Through the Firewall
+
+If you're using ufw (default on Ubuntu), run:
+
+sudo ufw allow ssh
+sudo ufw reload
+

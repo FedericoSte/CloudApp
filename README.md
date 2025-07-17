@@ -98,7 +98,7 @@ sudo ufw reload
 
 # manually create the executable file
 **If you want to create the executable file yourself, starting directly from the Python source file (main.py), follow these instructions.
-Otherwise, download the .exe file directly from this project's releases.**
+Otherwise, download the .exe file directly from this project's releases.**  
 On any computer (the instructions are for a Linux operating system):
 
 

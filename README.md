@@ -38,52 +38,63 @@ This guide explains how to **install, enable, and verify the SSH service** on a 
 ```bash
 sudo apt update
 sudo apt install openssh-server
+```
 
-Fedora
-
+### Fedora
+```bash
 sudo dnf install openssh-server
+```
 
-Arch Linux / Manjaro
-
+### Arch Linux / Manjaro
+```bash
 sudo pacman -S openssh
+```
 
-⚙️ 2. Enable and Start the SSH Service
+## 2. Enable and Start the SSH Service
 
 To enable the service at startup and start it immediately:
 
+```bash
 sudo systemctl enable ssh
 sudo systemctl start ssh
+```
 
-    ℹ️ On some systems, the service may be called sshd instead of ssh. If so, use:
+### On some systems, the service may be called sshd instead of ssh. If so, use:
+```bash
+sudo systemctl enable sshd
+sudo systemctl start sshd
+```
 
-    sudo systemctl enable sshd
-    sudo systemctl start sshd
-
-🔍 3. Check if SSH is Running
+## 3. Check if SSH is Running
 
 Verify that the service is active:
 
+```bash
 sudo systemctl status ssh
 
 Expected output:
-
 Active: active (running)
+```
 
-🧪 4. Test SSH Connection
+## 4. Test SSH Connection
 
 From another computer on the same network (or remotely, if firewall/port forwarding is configured), connect using:
 
+```
 ssh username@ip_address
+```
 
-Example:
-
+### Example:
+```
 ssh mario@192.168.1.100
-
+```
 You may be asked to confirm the server's fingerprint the first time.
-🔥 5. (Optional) Allow SSH Through the Firewall
+
+## 5. (Optional) Allow SSH Through the Firewall
 
 If you're using ufw (default on Ubuntu), run:
-
+```bash
 sudo ufw allow ssh
 sudo ufw reload
+```
 

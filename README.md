@@ -3,7 +3,7 @@
 
 **Cloud App** was born as a project for personal use and needs, but I decided to publish it because I found it useful in different contexts.
 CloudApp is written in python in a single file, to facilitate its conversion to .exe via the [PyInstaller module](https://pyinstaller.org/en/stable/installation.html).
-**The application is based on the [ssh](https://www.ssh.com/academy/ssh/protocol) and [sftp](https://www.ssh.com/academy/ssh/sftp-ssh-file-transfer-protocol) protocols to communicate with the server (a Linux server is required) to provide the classic services of a File Manager such as upload, downlad, copy, paste...**\n
+**The application is based on the [ssh](https://www.ssh.com/academy/ssh/protocol) and [sftp](https://www.ssh.com/academy/ssh/sftp-ssh-file-transfer-protocol) protocols to communicate with the server (a Linux server is required) to provide the classic services of a File Manager such as upload, downlad, copy, paste...**  
 The application uses multithreding to manage different execution flows.
 
 

@@ -99,6 +99,7 @@ sudo ufw reload
 # manually create the executable file
 **If you want to create the executable file yourself, starting directly from the Python source file (main.py), follow these instructions.
 Otherwise, download the .exe file directly from this project's releases.**
+On any computer (the instructions are for a Linux operating system):
 
 
 ## 1. Install PyInstaller:
@@ -107,7 +108,16 @@ sudo apt update
 sudo apt install pyinstaller
 ```
 
-## 2. Create the executable file:
+## 2. Download CloudApp.zip
+**Download the .zip file for this project and unzip it.**
+The main.py file must be in the same folder as the images folder.
+**Navigate to the newly unzipped folder.**
+```bash
+cd CloudApp
+```
+
+
+## 3. Create the executable file:
 ```bash
 python -m PyInstaller --onefile --noconsole --icon=immagini/icon.ico --add-data "immagini/icon_audio.png;immagini" --add-data "immagini/icon_file.png;immagini" --add-data "immagini/icon_folder.png;immagini" --add-data "immagini/icon_image.png;immagini" --add-data "immagini/icon_unknow.png;immagini" --add-data "immagini/icon_video.png;immagini" CloudApp.py
 ```

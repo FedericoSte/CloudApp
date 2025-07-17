@@ -93,3 +93,12 @@ sudo ufw allow ssh
 sudo ufw reload
 ```
 
+# Now simply with the ip address of your Linux computer you will be able to use CloudApp.
+
+# Usage
+CloudApp is very useful for repurposing an old computer and turning it into a cloud server, potentially accessible from around the world.
+Obviously, the server is initially exposed only within the local network, but you can implement various solutions to reach your server from anywhere.
+Personally, I found the most secure and stable solution to be using a VPN.
+Create your VPN through your preferred provider, connect your server to that VPN, and you're done.
+I personally use TailScale VPN. Below is a short tutorial on how to install TailScale on your Linux server and any other device.
+

@@ -73,7 +73,7 @@ Active: active (running)
 ```
 
 ## 4. Test SSH Connection
-From another computer on the same network (or remotely, if firewall/port forwarding is configured), connect using:
+From another computer on the same network, connect using:
 ```
 ssh username@ip_address
 ```
@@ -126,10 +126,10 @@ python -m PyInstaller --onefile --noconsole --icon=immagini/icon.ico --add-data 
 
 
 # Usage
-**CloudApp is very useful for repurposing an old computer and turning it into a cloud server, potentially accessible from around the world.**
-**Obviously, the server is initially exposed only within the local network**, but you can implement various solutions to reach your server from anywhere.
-Personally, I found the most secure and stable solution to be using a VPN.
-Create your VPN through your preferred provider, connect your server to that VPN, and you're done.
+**CloudApp is very useful for repurposing an old computer and turning it into a cloud server, potentially accessible from around the world.**  
+**Obviously, the server is initially exposed only within the local network**, but you can implement various solutions to reach your server from anywhere.  
+Personally, I found the most secure and stable solution to be using a VPN.  
+Create your VPN through your preferred provider, connect your server to that VPN, and you're done.  
 I personally use [TailScale VPN](https://tailscale.com/). Below is a short tutorial on how to install TailScale on your Linux server and any other device.
 
 Tutorial TailScale coming soon...

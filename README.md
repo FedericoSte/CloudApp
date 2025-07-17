@@ -94,6 +94,27 @@ sudo ufw reload
 
 **Now simply with the ip address of your Linux computer you will be able to use CloudApp.**
 
+
+
+# manually create the executable file
+**If you want to create the executable file yourself, starting directly from the Python source file (main.py), follow these instructions.
+Otherwise, download the .exe file directly from this project's releases.**.
+
+
+## 1. Install PyInstaller:
+```bash
+sudo apt update
+sudo apt install pyinstaller
+```
+
+## 2. Create the executable file:
+```bash
+python -m PyInstaller --onefile --noconsole --icon=immagini/icon.ico --add-data "immagini/icon_audio.png;immagini" --add-data "immagini/icon_file.png;immagini" --add-data "immagini/icon_folder.png;immagini" --add-data "immagini/icon_image.png;immagini" --add-data "immagini/icon_unknow.png;immagini" --add-data "immagini/icon_video.png;immagini" CloudApp.py
+```
+
+
+
+
 # Usage
 **CloudApp is very useful for repurposing an old computer and turning it into a cloud server, potentially accessible from around the world.**
 **Obviously, the server is initially exposed only within the local network**, but you can implement various solutions to reach your server from anywhere.

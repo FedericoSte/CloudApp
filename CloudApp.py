@@ -70,11 +70,11 @@ class SSHFileManager(QWidget):
         self.refresh_button.clicked.connect(self.load_remote_files)
         nav_layout.addWidget(self.refresh_button, stretch=1)
 
-        self.back_button = QPushButton("⬅️ Torna su")
+        self.back_button = QPushButton("⬅️ Go up")
         self.back_button.clicked.connect(self.go_up_directory)
         nav_layout.addWidget(self.back_button, stretch=2)
 
-        self.home_button = QPushButton("🏠 Casa")
+        self.home_button = QPushButton("🏠 Home")
         self.home_button.clicked.connect(self.go_home_directory)
         nav_layout.addWidget(self.home_button, stretch=2)
         
@@ -83,11 +83,11 @@ class SSHFileManager(QWidget):
 
         # Crea una combo box per l'ordinamento
         self.sort_combo = QComboBox()
-        self.sort_combo.addItem("Ordina per nome Crescente")
-        self.sort_combo.addItem("Ordina per nome Decrescente")
-        self.sort_combo.addItem("Ordina per Dimensione Crescente")
-        self.sort_combo.addItem("Ordina per Dimensione Decrescente")
-        self.sort_combo.addItem("Ordina per Ultima Modifica")
+        self.sort_combo.addItem("Sort by name Ascending")
+        self.sort_combo.addItem("Sort by name Descending")
+        self.sort_combo.addItem("Sort by Size Ascending")
+        self.sort_combo.addItem("Sort by Size Descending")
+        self.sort_combo.addItem("Sort by Last Modified")
 
 
         # Collegala a una funzione di ordinamento
@@ -117,7 +117,7 @@ class SSHFileManager(QWidget):
         self.download_button = QPushButton("⬇️ Download")
         self.upload_button = QPushButton("⬆️ Upload File")
         self.upload_folder_button = QPushButton("⬆️📁 Upload Folder")
-        self.shutdown_button = QPushButton("🛑 Arresta Server")
+        self.shutdown_button = QPushButton("🛑 Server Shutdown")
         self.shutdown_button.clicked.connect(self.shutdown_server)
 
 
@@ -180,8 +180,8 @@ class SSHFileManager(QWidget):
     def shutdown_server(self):
         reply = QMessageBox.question(
             self,
-            "Conferma Spegnimento",
-            "Sei sicuro di voler arrestare il server remoto?",
+            "Confirm Shutdown",
+            "Are you sure you want to stop the remote server?",
             QMessageBox.Yes | QMessageBox.No
         )
         if reply == QMessageBox.Yes:
@@ -190,10 +190,10 @@ class SSHFileManager(QWidget):
                 stdin, stdout, stderr = self.ssh.exec_command("sudo shutdown now")
 
                 # Mostra messaggio e chiude l'app dopo 2 secondi
-                QMessageBox.information(self, "Shutdown", "Il server è in fase di spegnimento...")
+                QMessageBox.information(self, "Shutdown", "The server is shutting down...")
                 QTimer.singleShot(2000, self.close)  
             except Exception as e:
-                QMessageBox.critical(self, "Errore", f"Errore durante l'arresto del server: {e}")
+                QMessageBox.critical(self, "Error", f"Error while stopping server: {e}")
 
 
 
@@ -209,9 +209,9 @@ class SSHFileManager(QWidget):
             return False
 
 
-        password, ok = QInputDialog.getText(self, "Connessione SSH", "Inserisci la password:", echo=QLineEdit.Password)
+        password, ok = QInputDialog.getText(self, "SSH Connection", "Enter your password:", echo=QLineEdit.Password)
         if not ok:
-            QMessageBox.warning(self, "Operazione Annullata", "Connessione SSH annullata.")
+            QMessageBox.warning(self, "Operation Cancelled", "SSH connection canceled.")
             sys.exit(0)
 
         loading_dialog = LoadingDialog(self)
@@ -219,15 +219,15 @@ class SSHFileManager(QWidget):
 
         try:
             for i in range(1, 6):
-                loading_dialog.update_message(f"Tentativo di connessione al server... [N.{i}]")
+                loading_dialog.update_message(f"Attempting to connect to the server...[N.{i}]")
                 if self.ping1(self.server_ip):
                     break
 
                 elif i == 5:
-                    QMessageBox.warning(self, "Operazione Annullata", "Impossibile raggiungere il server, potrebbe essere spento o non raggiungibile.")
+                    QMessageBox.warning(self, "Operation Cancelled", "Unable to reach the server, it may be down or unreachable.")
                     sys.exit(0)
             
-            loading_dialog.update_message("Server Trovato, tentativo di connessione SSH...")
+            loading_dialog.update_message("Server Found, attempting to connect to SSH...")
 
             self.ssh = paramiko.SSHClient()
             self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -236,7 +236,7 @@ class SSHFileManager(QWidget):
             self.sftp.chdir(self.server_dir)
             self.current_dir = self.server_dir
 
-            loading_dialog.update_message("Connessione riuscita!")
+            loading_dialog.update_message("Connection successful!")
 
             self.connesso = True 
 
@@ -244,7 +244,7 @@ class SSHFileManager(QWidget):
             loading_dialog.close()
 
         except paramiko.SSHException as e:
-            QMessageBox.critical(self, "Errore di connesione SSH [paramiko]", str(e))
+            QMessageBox.critical(self, "SSH connection error [paramiko]", str(e))
             sys.exit(1)
 
         except socket.timeout as e:
@@ -252,7 +252,7 @@ class SSHFileManager(QWidget):
             sys.exit(1)
 
         except Exception as e:
-            QMessageBox.critical(self, "Errore SSH", str(e))         
+            QMessageBox.critical(self, "Error SSH", str(e))         
             sys.exit(1)
 
    
@@ -268,7 +268,7 @@ class SSHFileManager(QWidget):
         print(f"Tempo medio di ping: {media} secondi")
         
         # Aggiorna il testo della QLabel con il tempo medio di ping
-        self.ping_result_label.setText(f"Ping: {media} secondi")
+        self.ping_result_label.setText(f"Ping: {media} second")
         self.ping_result_label.update()  # Forza il ridisegno del layout
         QApplication.processEvents()  # Assicura che l'interfaccia si aggiorni
     
@@ -394,7 +394,7 @@ class SSHFileManager(QWidget):
         try:
             self.sftp.chdir(self.current_dir)  
         except Exception as e:
-            QMessageBox.critical(self, "Errore", f"Errore nel cambio directory: {e}")
+            QMessageBox.critical(self, "Error", f"Error changing directory: {e}")
             return
 
         def resource_path(relative_path):
@@ -533,7 +533,7 @@ class SSHFileManager(QWidget):
 
     def on_operation_finished(self, message):
         self.progress_bar.setVisible(False)
-        QMessageBox.information(self, "Upload cartella", message)
+        QMessageBox.information(self, "Upload Folder", message)
 
 
     
@@ -549,7 +549,7 @@ class SSHFileManager(QWidget):
     def download(self):
         selected_item = self.file_list.currentItem()
         if not selected_item:
-            QMessageBox.warning(self, "Attenzione", "Seleziona un file da scaricare.")
+            QMessageBox.warning(self, "Attenzione!", "Select a file to download.")
             return
 
         filename = selected_item.text()
@@ -558,7 +558,7 @@ class SSHFileManager(QWidget):
         is_dir = stat_is_dir(attr.st_mode)
 
 
-        local_folder = QFileDialog.getExistingDirectory(self, "Seleziona cartella di destinazione")
+        local_folder = QFileDialog.getExistingDirectory(self, "Select destination folder")
         if not local_folder:
             return
 
@@ -584,7 +584,7 @@ class SSHFileManager(QWidget):
 
 
     def upload_file(self):
-        file_paths, _ = QFileDialog.getOpenFileNames(self, "Seleziona uno o più file da caricare")
+        file_paths, _ = QFileDialog.getOpenFileNames(self, "Select one or more files to upload")
         if file_paths:
             self.progress_bar.setValue(0)
             self.progress_bar.setVisible(True)
@@ -607,7 +607,7 @@ class SSHFileManager(QWidget):
 
 
     def upload_folder(self):
-        folder_path = QFileDialog.getExistingDirectory(self, "Seleziona una cartella da caricare")
+        folder_path = QFileDialog.getExistingDirectory(self, "Select a folder to upload")
         if not folder_path:
             return
 
@@ -631,13 +631,13 @@ class SSHFileManager(QWidget):
 
     def open_context_menu(self, position):
         menu = QMenu()
-        copy_action = menu.addAction("Copia")
-        paste_action = menu.addAction("Incolla")
-        cut_action = menu.addAction("Taglia")
-        rename_action = menu.addAction("Rinomina")
-        mkdir_action = menu.addAction("Crea Cartella")
-        properties_action = menu.addAction("Proprietà")
-        delete_action = menu.addAction("Elimina")
+        copy_action = menu.addAction("Copy")
+        paste_action = menu.addAction("Paste")
+        cut_action = menu.addAction("Cut")
+        rename_action = menu.addAction("Rename")
+        mkdir_action = menu.addAction("Create Folder")
+        properties_action = menu.addAction("Property")
+        delete_action = menu.addAction("Delete")
 
         action = menu.exec_(self.file_list.viewport().mapToGlobal(position))
         selected_item = self.file_list.currentItem()
@@ -675,19 +675,19 @@ class SSHFileManager(QWidget):
 
                 self.load_remote_files()
             except Exception as e:
-                QMessageBox.critical(self, "Errore", f"Incolla fallita: {e}")
+                QMessageBox.critical(self, "Error", f"Paste failed: {e}")
             finally:
                 self.clipboard = None
                 self.cut_mode = False
         
         elif action == mkdir_action:
-            folder_name, ok = QInputDialog.getText(self, "Nuova Cartella", "Nome cartella:")
+            folder_name, ok = QInputDialog.getText(self, "New Folder", "Folder Name:")
             if ok and folder_name:
                 self.sftp.mkdir(f"{self.current_dir}/{folder_name}")
                 self.load_remote_files()
         elif action == rename_action and selected_item:
             old_name = selected_item.text()
-            new_name, ok = QInputDialog.getText(self, "Rinomina", "Nuovo nome:", text=old_name)
+            new_name, ok = QInputDialog.getText(self, "Rename", "New Name:", text=old_name)
             if ok and new_name and new_name != old_name:
                 self.sftp.rename(f"{self.current_dir}/{old_name}", f"{self.current_dir}/{new_name}")
                 self.load_remote_files()
@@ -700,7 +700,7 @@ class SSHFileManager(QWidget):
                 mtime = datetime.fromtimestamp(attr.st_mtime).strftime('%Y-%m-%d %H:%M:%S')
                 file_type = "Cartella" if stat_is_dir(attr.st_mode) else "File"
                 msg = QDialog(self)
-                msg.setWindowTitle("Proprietà")
+                msg.setWindowTitle("Property")
                 layout = QVBoxLayout()
                 layout.addWidget(QLabel(f"Nome: {filename}"))
                 layout.addWidget(QLabel(f"Tipo: {file_type}"))
@@ -709,17 +709,17 @@ class SSHFileManager(QWidget):
 
 
                 
-                layout.addWidget(QLabel(f"Dimensione: {self.calcola_dimensione(remote_path)[1]}"))
-                layout.addWidget(QLabel(f"Ultima modifica: {mtime}"))
-                layout.addWidget(QLabel(f"Percorso: {remote_path}"))
+                layout.addWidget(QLabel(f"Size: {self.calcola_dimensione(remote_path)[1]}"))
+                layout.addWidget(QLabel(f"Last modification: {mtime}"))
+                layout.addWidget(QLabel(f"Path: {remote_path}"))
                 msg.setLayout(layout)
                 msg.exec_()
             except Exception as e:
-                QMessageBox.critical(self, "Errore", f"Errore durante il recupero delle proprietà: {e}")
+                QMessageBox.critical(self, "Error", f"Error while retrieving properties: {e}")
         elif action == delete_action and selected_item:
             filename = selected_item.text()
             remote_path = f"{self.current_dir}/{filename}"
-            reply = QMessageBox.question(self, "Conferma Eliminazione", f"Vuoi eliminare '{filename}'?", QMessageBox.Yes | QMessageBox.No)
+            reply = QMessageBox.question(self, "Confirm Deletion", f"You want to delete '{filename}'?", QMessageBox.Yes | QMessageBox.No)
             if reply == QMessageBox.Yes:
                 try:
                     attr = self.sftp.stat(remote_path)
@@ -729,7 +729,7 @@ class SSHFileManager(QWidget):
                         self.sftp.remove(remote_path)
                     self.load_remote_files()
                 except Exception as e:
-                    QMessageBox.critical(self, "Errore", f"Errore durante l'eliminazione: {e}")
+                    QMessageBox.critical(self, "Error", f"Error while deleting: {e}")
 
     def _remove_directory_recursive(self, path):
         for item in self.sftp.listdir(path):
@@ -765,13 +765,13 @@ class SSHFileManager(QWidget):
                         self.show_video_preview(filename, tmp.name)
 
                 else:
-                    QMessageBox.information(self, "Non supportato", "Tipo di file non supportato per l'apertura.")
+                    QMessageBox.information(self, "Not supported", "File type not supported for opening.")
         except Exception as e:
-            QMessageBox.critical(self, "Errore", f"Errore durante il doppio clic: {e}")
+            QMessageBox.critical(self, "Error", f"Double-click error: {e}")
 
     def show_text_content(self, title, content):
         dialog = QDialog(self)
-        dialog.setWindowTitle(f"Contenuto di {title}")
+        dialog.setWindowTitle(f"Contents of {title}")
         layout = QVBoxLayout()
         text_edit = QTextEdit()
         text_edit.setReadOnly(True)
@@ -783,7 +783,7 @@ class SSHFileManager(QWidget):
 
     def show_image_content(self, title, filepath):
         dialog = QDialog(self)
-        dialog.setWindowTitle(f"Anteprima Immagine - {title}")
+        dialog.setWindowTitle(f"Image Preview - {title}")
         layout = QVBoxLayout()
         label = QLabel()
         pixmap = QPixmap(filepath)
@@ -794,7 +794,7 @@ class SSHFileManager(QWidget):
 
     def show_video_preview(self, title, filepath):
         dialog = QDialog(self)
-        dialog.setWindowTitle(f"Anteprima Video - {title}")
+        dialog.setWindowTitle(f"Video Preview - {title}")
         layout = QVBoxLayout()
 
         label = QLabel()
@@ -839,11 +839,11 @@ class SSHFileManager(QWidget):
 class LoginDialog(QDialog):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Credenziali SSH")
+        self.setWindowTitle("SSH Credentials")
         self.setFixedSize(400, 350)
 
         # Label e input per IP
-        self.ip_label = QLabel("Indirizzo IP:")
+        self.ip_label = QLabel("IP Address:")
         self.ip_input = QLineEdit()
 
         # Label e input per username
@@ -851,16 +851,16 @@ class LoginDialog(QDialog):
         self.user_input = QLineEdit()
 
         # Label e input per remote directory
-        self.dir_label = QLabel("remote directory:")
+        self.dir_label = QLabel("Remote Directory:")
         self.dir_input = QLineEdit()
 
         # Label e input per la porta
-        self.port_label = QLabel("remote port:")
+        self.port_label = QLabel("Remote Port:")
         self.port_input = QLineEdit()
 
         # Pulsanti
         self.ok_button = QPushButton("OK")
-        self.cancel_button = QPushButton("Annulla")
+        self.cancel_button = QPushButton("Cancel")
         self.ok_button.clicked.connect(self.accept)
         self.cancel_button.clicked.connect(self.reject)
 
@@ -895,14 +895,14 @@ class LoginDialog(QDialog):
 class LoadingDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Caricamento in corso...")
+        self.setWindowTitle("Loading...")
         self.setModal(True)  # Rende la finestra modale (bloccante)
         self.setFixedSize(400, 200)
 
         # Layout per la finestra di caricamento
         layout = QVBoxLayout(self)
 
-        self.label = QLabel("Attendere prego...", self)
+        self.label = QLabel("Please wait...", self)
 
         layout.addWidget(self.label)
 
@@ -959,7 +959,7 @@ class ImageDownloadThread(QThread):
 
                     self.icon_updated.emit(filename, icon)
             except Exception as e:
-                print(f"Errore nel download dell'immagine {filename}: {e}")
+                print(f"Error downloading image {filename}: {e}")
 
 
 #-- file upload
@@ -1003,11 +1003,11 @@ class FileBatchUploadThread(QThread):
                 self.uploaded_size += os.path.getsize(path)
 
             if self._is_running:
-                self.upload_finished.emit("Upload file completato.")
+                self.upload_finished.emit("File upload Completed.")
             else:
-                self.upload_finished.emit("Upload interrotto.")
+                self.upload_finished.emit("Upload Interrupted.")
         except Exception as e:
-            self.upload_finished.emit(f"Errore durante l'upload: {e}")
+            self.upload_finished.emit(f"Error while uploading: {e}")
 
 
 
@@ -1054,16 +1054,16 @@ class FolderBatchUploadThread(QThread):
 
                 def callback(transferred, total, local_path=local_path):
                     if not self._is_running:
-                        raise Exception("Upload interrotto manualmente")
+                        raise Exception("Upload stopped manually")
                     progress = int((self.uploaded_size + transferred) / self.total_size * 100)
                     self.progress_updated.emit(progress)
 
                 self.sftp.put(local_path, remote_path, callback=callback)
                 self.uploaded_size += os.path.getsize(local_path)
 
-            self.upload_finished.emit("Cartella caricata con successo.")
+            self.upload_finished.emit("Folder uploaded successfully.")
         except Exception as e:
-            self.upload_finished.emit(f"Errore durante l'upload: {e}")
+            self.upload_finished.emit(f"Error while uploading: {e}")
 
     def ensure_remote_dirs(self, remote_path):
         """Crea directory remote se mancano"""
@@ -1077,7 +1077,7 @@ class FolderBatchUploadThread(QThread):
                 try:
                     self.sftp.mkdir(path)
                 except Exception as e:
-                    print(f"Errore nella creazione di {path}: {e}")
+                    print(f"Error creating {path}: {e}")
 
 
 
@@ -1105,9 +1105,9 @@ class FileBatchDownloadThread(QThread):
                     percent = int((transferred / total) * 100)
                     self.progress_updated.emit(percent)
                 self.sftp.get(self.remote_path, self.local_path, callback=callback)
-            self.download_finished.emit(f"Download completato: {self.local_path}")
+            self.download_finished.emit(f"Download Completed: {self.local_path}")
         except Exception as e:
-            self.download_finished.emit(f"Errore durante il download: {e}")
+            self.download_finished.emit(f"Error while downloading: {e}")
 
 
 # --- folder download  ---
@@ -1155,9 +1155,9 @@ class FolderBatchDownloadThread(QThread):
                     self.sftp.get(remote_path, local_path, callback=callback)
                     self.downloaded_size += os.path.getsize(local_path)
 
-            self.download_finished.emit(f"Download completato: {self.local_dir}")
+            self.download_finished.emit(f"Download Completed: {self.local_dir}")
         except Exception as e:
-            self.download_finished.emit(f"Errore durante il download della cartella: {e}")
+            self.download_finished.emit(f"Error downloading folder: {e}")
 
 
 
@@ -1187,7 +1187,7 @@ class ThreadPingSteve(QThread):
             try:
                 if error >= 3:
                     print("3 pacchetti consecutivi persi!")
-                    QMessageBox.warning(self, "Connessione Interrotta", "3 Pacchetti ping persi.")
+                    QMessageBox.warning(self, "Connection interrupted", "3 Ping packets lost.")
                     sys.exit(0)
                 
                 time_start = time.time()
@@ -1216,7 +1216,7 @@ class ThreadPingSteve(QThread):
                     ricevuti += 1
                     error = 0
                 else:
-                    print(f"Errore durante il ping del pacchetto {i+1}: {stderr.decode()}")
+                    print(f"Error while pinging packet {i+1}: {stderr.decode()}")
                     error += 1
 
             except Exception as e:

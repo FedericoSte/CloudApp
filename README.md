@@ -120,7 +120,7 @@ cd CloudApp
 ```bash
 pip3 install -r requests.txt
 ```
-**Be careful, use a virtual environment to avoid conflicts with apt packages**
+**Be careful, use a virtual environment to avoid conflicts with apt packages.**
 
 
 ## 4. Create the executable file:

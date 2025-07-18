@@ -92,7 +92,7 @@ sudo ufw allow ssh
 sudo ufw reload
 ```
 
-**Now simply with the ip address of your Linux computer you will be able to use CloudApp.**
+**Now simply with the ip address of your Linux computer you will be able to use CloudApp.exe.**
 
 
 

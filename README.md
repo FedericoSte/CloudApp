@@ -24,31 +24,31 @@ The application uses multithreding to manage different execution flows.
 
 
 
-# How to Enable SSH Service on a New Linux Computer
+# How to Enable SSH Service on a New Linux Computer.
 
 This guide explains how to **install, enable, and verify the [SSH service](https://documentation.ubuntu.com/server/how-to/security/openssh-server/index.html)** on a Linux system (your Server).
 
 ---
 
-## 1. Install OpenSSH Server
+## 1. Install OpenSSH Server.
 
-### Ubuntu / Debian
+### Ubuntu / Debian:
 ```bash
 sudo apt update
 sudo apt install openssh-server
 ```
 
-### Fedora
+### Fedora:
 ```bash
 sudo dnf install openssh-server
 ```
 
-### Arch Linux / Manjaro
+### Arch Linux / Manjaro:
 ```bash
 sudo pacman -S openssh
 ```
 
-## 2. Enable and Start the SSH Service
+## 2. Enable and Start the SSH Service.
 To enable the service at startup and start it immediately:
 ```bash
 sudo systemctl enable ssh
@@ -61,7 +61,7 @@ sudo systemctl enable sshd
 sudo systemctl start sshd
 ```
 
-## 3. Check if SSH is Running
+## 3. Check if SSH is Running.
 Verify that the service is active:
 
 ```bash
@@ -72,7 +72,7 @@ Expected output:
 Active: active (running)
 ```
 
-## 4. Test SSH Connection
+## 4. Test SSH Connection.
 From another computer on the same network, connect using:
 ```
 ssh username@ip_address
@@ -84,7 +84,7 @@ ssh mario@192.168.1.100
 ```
 You may be asked to confirm the server's fingerprint the first time.
 
-## 5. (Optional) Allow SSH Through the Firewall
+## 5. (Optional) Allow SSH Through the Firewall.
 
 If you're using ufw (default on Ubuntu), run:
 ```bash
@@ -96,7 +96,7 @@ sudo ufw reload
 
 
 
-# manually create the executable file
+# manually create the executable file.
 **If you want to create the executable file yourself, starting directly from the Python source file (main.py), follow these instructions.
 Otherwise, download the .exe file directly from this project's releases.**  
 On any computer (the instructions are for a Linux operating system):

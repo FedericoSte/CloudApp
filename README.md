@@ -24,7 +24,7 @@ The application uses multithreding to manage different execution flows.
 
 
 
-# How to Enable SSH Service on a New Linux Computer.
+# How to Enable SSH Service on a New Linux Computer.  
 **To use cloudApp, the Linux server must have the SSH service enable.**
 This guide explains how to **install, enable, and verify the [SSH service](https://documentation.ubuntu.com/server/how-to/security/openssh-server/index.html)** on a Linux system (your Server).
 

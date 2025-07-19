@@ -19,7 +19,7 @@ The application uses multithreding to manage different execution flows.
 
 
 # Uses
-You can use **CloudApp to exchange and manage files on any Linux computer**, such as Raspberry Pi, but also virtual machines.  
+You can **use CloudApp to exchange and manage files on any Linux computer**, such as Raspberry Pi, but also virtual machines.  
 **CloudApp is very useful for repurposing an old computer and turning it into a cloud server, potentially accessible from around the world.**  
 **Obviously, the server is initially exposed only within the local network**, but you can implement various solutions to reach your server from anywhere.  
 Personally, I found the most secure and stable solution to be using a VPN.  

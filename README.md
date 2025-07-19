@@ -1,11 +1,5 @@
 # CloudApp
 **CloudApp for Windows: File Management Using the SSH Protocol.**
-
-**Cloud App** was born as a project for personal use and needs, but I decided to publish it because I found it useful in different contexts.  
-CloudApp is written in python in a single file, to facilitate its conversion to .exe via the [PyInstaller module](https://pyinstaller.org/en/stable/installation.html).  
-**The application is based on the [ssh](https://www.ssh.com/academy/ssh/protocol) and [sftp](https://www.ssh.com/academy/ssh/sftp-ssh-file-transfer-protocol) protocols to communicate with the server (a Linux server is required) to provide the classic services of a File Manager such as upload, downlad, copy, paste...**  
-The application uses multithreding to manage different execution flows.
-
 **CloudApp** was originally created as a personal project to meet specific needs, but I decided to release it because I found it valuable in various contexts. Written in Python as a single file, CloudApp is designed to simplify conversion to an .exe file using the [PyInstaller Module](https://pyinstaller.org/en/stable/installation.html).  
 **The application leverages [SSH](https://www.ssh.com/academy/ssh/protocol) and [SFTP](https://www.ssh.com/academy/ssh/sftp-ssh-file-transfer-protocol) protocols to communicate with the server (a Linux server is required) and provides traditional file manager functionalities such as upload, download, copy, and paste...**  
 It also employs multithreading to handle multiple execution flows concurrently.

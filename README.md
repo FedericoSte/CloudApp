@@ -1,6 +1,6 @@
 # CloudApp
 
-<img width="1024" height="1024" alt="icon - Copia" src="https://github.com/user-attachments/assets/b0907fa0-ddb9-4e24-91a5-8a73ea2d13a5" />
+<img width="357" height="357" alt="icon" src="https://github.com/user-attachments/assets/48d021d0-e574-41f9-9a11-a9e6fa151042" />
 
 
 

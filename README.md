@@ -10,8 +10,7 @@ The application uses multithreding to manage different execution flows.
 
 
 
-
-<img width="336" height="171" alt="immagine" src="https://github.com/user-attachments/assets/ae3c7e12-a04b-4f53-a969-73a88a5ae660" /> <img width="394" height="385" alt="immagine" src="https://github.com/user-attachments/assets/eb5d9942-af82-4e2b-a0df-ca9b45c82a26" />
+<img width="394" height="385" alt="immagine" src="https://github.com/user-attachments/assets/eb5d9942-af82-4e2b-a0df-ca9b45c82a26" /> <img width="336" height="171" alt="immagine" src="https://github.com/user-attachments/assets/ae3c7e12-a04b-4f53-a969-73a88a5ae660" />
 
 <img width="991" height="838" alt="immagine" src="https://github.com/user-attachments/assets/331af5e9-6459-40b3-9536-20e536c3fe95" />
 

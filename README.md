@@ -1,10 +1,14 @@
 # CloudApp
-**Cloud App for Windows based on ssh protocol.**
+**CloudApp for Windows: File Management Using the SSH Protocol.**
 
 **Cloud App** was born as a project for personal use and needs, but I decided to publish it because I found it useful in different contexts.  
 CloudApp is written in python in a single file, to facilitate its conversion to .exe via the [PyInstaller module](https://pyinstaller.org/en/stable/installation.html).  
 **The application is based on the [ssh](https://www.ssh.com/academy/ssh/protocol) and [sftp](https://www.ssh.com/academy/ssh/sftp-ssh-file-transfer-protocol) protocols to communicate with the server (a Linux server is required) to provide the classic services of a File Manager such as upload, downlad, copy, paste...**  
 The application uses multithreding to manage different execution flows.
+
+**CloudApp** was originally created as a personal project to meet specific needs, but I decided to release it because I found it valuable in various contexts. Written in Python as a single file, CloudApp is designed to simplify conversion to an .exe file using the [PyInstaller Module](https://pyinstaller.org/en/stable/installation.html).  
+**The application leverages [SSH](https://www.ssh.com/academy/ssh/protocol) and [SFTP](https://www.ssh.com/academy/ssh/sftp-ssh-file-transfer-protocol) protocols to communicate with the server (a Linux server is required) and provides traditional file manager functionalities such as upload, download, copy, and paste...**  
+It also employs multithreading to handle multiple execution flows concurrently.
 
 
 
@@ -17,16 +21,12 @@ The application uses multithreding to manage different execution flows.
 
 
 # Uses
-You can **use CloudApp to exchange and manage files on any Linux computer**, such as Raspberry Pi, but also virtual machines.  
-**CloudApp is very useful for repurposing an old computer and turning it into a cloud server, potentially accessible from around the world.**  
-**Obviously, the server is initially exposed only within the local network**, but you can implement various solutions to reach your server from anywhere.  
-Personally, I found the most secure and stable solution to be using a VPN.  
-Create your VPN through your preferred provider, connect your server to that VPN, and you're done.  
-I personally use [TailScale VPN](https://tailscale.com/). Below is a short tutorial on how to install TailScale on your Linux server and any other device.
+**CloudApp can be used to exchange and manage files on ANY Linux Computer**, including devices like Raspberry Pi, as well as virtual machines.  
+**CloudApp is particularly useful for repurposing an old computer and transforming it into a cloud server, which can potentially be accessed from anywhere in the world.  
+While the server is initially exposed only within the local network**, there are several solutions you can implement to access your server remotely. Personally, I have found that the most secure and stable method is using a VPN. You can set up a VPN through your preferred provider, connect your server to that VPN, and you're good to go. I personally use  [TailScale VPN](https://tailscale.com/).  
+Below is a short tutorial on how to install TailScale on your Linux server and any other device.  
 
 Tutorial TailScale coming soon...
-
-
 
 
 
